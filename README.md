@@ -35,7 +35,7 @@ The midi file will be generated
 ## Training
 
 ### Training data
-Here are the setting for defaul proram
+Here are the setting for defaul program
 - Time Signture : 4/4
 - Lenth : 4 bars
 - Shortest Note : <br>  hihat : thirsecond note
@@ -44,7 +44,7 @@ Here are the setting for defaul proram
 - Pitch : As long as they are all same pitch
 
 ### Midi_Data()
-### Initialize
+#### Initialize
 
 ```
 from midi_Data import*
@@ -68,7 +68,7 @@ md.create_midi(data, instrument, output_path)
 
 ### Train_Instrument()
 
-### Initialize
+#### Initialize
 
 ```
 from gan import*
