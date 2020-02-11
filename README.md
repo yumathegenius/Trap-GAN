@@ -1,6 +1,6 @@
 # Trap-GAN
 This is a python base machine learning trap beats generator.
-This project contain pre-trained data
+<br>This project contain pre-trained data
 
 ## Instroments 
  - hihat
