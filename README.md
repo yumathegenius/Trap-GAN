@@ -93,5 +93,5 @@ data = instrument_train.generate_midi_data()
 ```
 
 ## SEND ME UR BEATS!!!!
-send me your beats, help be develope this thing!!!
+send me your beats, help be develope this thing!!!<br>
 yumathegenius@gmail.com
