@@ -38,9 +38,9 @@ The midi file will be generated
 Here are the setting for defaul proram
 - Time Signture : 4/4
 - Lenth : 4 bars
-- Shortest Note : <br>  hihat : thirsecond_note
-                  <br>  kick : eighth_note
-                  <br>  snare : eighth_note
+- Shortest Note : <br>  hihat : thirsecond note
+                  <br>  kick : eighth note
+                  <br>  snare : eighth note
 - Pitch : As long as they are all same pitch
 
 ### Midi_Data()
@@ -66,7 +66,7 @@ Create midi from generated data
 md.create_midi(data, instrument, output_path)
 ```
 
-### Train_Instrument
+### Train_Instrument()
 
 ### Initialize
 
