@@ -92,3 +92,6 @@ instrument_train.checkpoint.restore(tf.train.latest_checkpoint(instrument_train.
 data = instrument_train.generate_midi_data()
 ```
 
+## SEND ME UR BEATS!!!!
+send me your beats, help be develope this thing!!!
+DM for detail
