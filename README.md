@@ -1,6 +1,5 @@
 # Trap-GAN
 This is a python base machine learning trap beats generator.
-<br>This project contain pre-trained data
 
 ## Instroments 
  - hihat
@@ -95,3 +94,5 @@ data = instrument_train.generate_midi_data()
 ## SEND ME UR BEATS!!!!
 send me your beats, help me develope this thing!!!<br>
 yumathegenius@gmail.com
+
+## APP COMING SOON
