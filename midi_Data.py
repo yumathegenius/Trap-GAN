@@ -20,26 +20,26 @@ class Midi_Data:
     self.name_data         = {'hihat' : [72, 105, 72, 97, 116],
                               'kick'  : [75, 105, 99, 107],
                               'snare' : [83, 110, 97, 114, 101]}    
-  def get_data(self, file, name):
-    min_note = self.min_note[name]
+  def get_data(self, file, instrument):
+    min_note = self.min_note[instrument]
 
-    notes = self.get_notes(file)
+    events = self.get_events(file)
     data = list()
 
-    for i in range(0, len(notes), 2):
+    for i in range(0, len(events), 2):
       #first
-      if notes[i].tick != 0:
+      if events[i].tick != 0:
         data.append([0.0,0.0])
       
-      if notes[i].tick > min_note:
-        for x in range(1, int(notes[i].tick/min_note)):
+      if events[i].tick > min_note:
+        for x in range(1, int(events[i].tick/min_note)):
           data.append([0.0,1.0])
       #second
-      if notes[i+1].tick != 0:
+      if events[i+1].tick != 0:
         data.append([1.0,0.0])
       
-      if notes[i+1].tick > min_note:
-        for x in range(1, int(notes[i+1].tick/min_note)):
+      if events[i+1].tick > min_note:
+        for x in range(1, int(events[i+1].tick/min_note)):
           data.append([1.0,1.0])
 
     r = int((self.whole_lenth/min_note) - len(data))
@@ -51,24 +51,24 @@ class Midi_Data:
     return data
 
 
-  def get_notes(self, file):
+  def get_events(self, file):
     pattern = midi.read_midifile(file)
     lenth = 0
-    notes = list()
+    events = list()
     
     for track in pattern:
       for event in track:
         if type(event) is midi.events.NoteOnEvent or type(event) is midi.events.NoteOffEvent:
-          notes.append(event)
+          events.append(event)
 
-    return notes
+    return events
 
-  def create_midi(self, data, name, gen_path):
-    min_note = self.min_note[name]
+  def create_midi(self, data, instrument, gen_path):
+    min_note = self.min_note[instrument]
     self.pattern = midi.Pattern(resolution=self.resolution)
     self.track = midi.Track()
-    self.track.append(midi.TrackNameEvent(tick=0, text=name, data=self.name_data[name]))
-    self.track.append(midi.InstrumentNameEvent(tick=0, text=name, data=self.name_data[name]))
+    self.track.append(midi.TrackNameEvent(tick=0, text=instrument, data=self.name_data[instrument]))
+    self.track.append(midi.InstrumentNameEvent(tick=0, text=instrument, data=self.name_data[instrument]))
     self.event_i = 0
 
     #trim tail
@@ -86,13 +86,13 @@ class Midi_Data:
         x += 1
       elif  data[i][1] == 0:
         on_next = data[i][0] 
-        self.add_event(on, on_next, x* min_note, self.pitch[name])
+        self.add_event(on, on_next, x* min_note, self.pitch[instrument])
         on = on_next
         x = 1
     
-    self.add_event(on, 0, x* min_note, self.pitch[name])
+    self.add_event(on, 0, x* min_note, self.pitch[instrument])
     if (self.event_i % 2) == 1:
-      self.track.insert(2, midi.NoteOnEvent(tick=0, channel=0, data=[self.pitch[name], 79]))   
+      self.track.insert(2, midi.NoteOnEvent(tick=0, channel=0, data=[self.pitch[instrument], 79]))   
 
 
     self.track.append(midi.EndOfTrackEvent(tick=0, data=[]))
@@ -111,3 +111,14 @@ class Midi_Data:
     else:
       self.track.append(midi.NoteOnEvent(tick=lenth,  channel=0, data=[pitch, 64]))
       self.event_i+=1
+
+  def chk_data(self, file, instrument):
+    min_note = self.min_note[instrument]
+    events = self.get_events(file)
+
+    for event in events:
+      if event.tick % min_note != 0:
+        return False
+
+    return True
+
