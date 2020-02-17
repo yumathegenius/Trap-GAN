@@ -34,7 +34,7 @@ def main():
   script_home = os.path.dirname(os.path.realpath(__file__))
   os.makedirs('{}/output'.format(script_home), exist_ok = True)
 
-  epochs = 100000
+  epochs = 100
 
   md = Midi_Data()
   # Check Training data
