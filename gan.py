@@ -25,7 +25,6 @@ class Train_Instrument:
                                                               directory=self.checkpoint_dir,
                                                               max_to_keep=1)
     self.status                  = self.checkpoint.restore(self.manager.latest_checkpoint)
-    print(self.status)
     # Define the training loop
     self.noise_dim = 100
     self.num_examples_to_generate = 1

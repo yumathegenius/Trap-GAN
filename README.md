@@ -102,4 +102,8 @@ data = instrument_train.generate_midi_data()
 send me your beats, help me develope this thing!!!<br>
 yumathegenius@gmail.com
 
+## Donation!!!!
+PayPal :<br>
+https://paypal.me/pools/campaign/113237164948464442<br>
+
 ## APP COMING SOON
