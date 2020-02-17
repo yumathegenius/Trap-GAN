@@ -118,6 +118,7 @@ class Midi_Data:
 
     for event in events:
       if event.tick % min_note != 0:
+        print(events)
         return False
 
     return True

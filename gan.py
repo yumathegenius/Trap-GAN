@@ -17,11 +17,15 @@ class Train_Instrument:
     self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
     self.cross_entropy           = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     self.checkpoint_dir          = '{}/{}/training_checkpoints'.format(ckep_path, instrument)
-    self.checkpoint_prefix       = os.path.join(self.checkpoint_dir, "ckpt")
     self.checkpoint              = tf.train.Checkpoint(generator_optimizer=self.generator_optimizer,
                                                        discriminator_optimizer=self.discriminator_optimizer,
                                                        generator=self.generator,
                                                        discriminator=self.discriminator)
+    self.manager                 = tf.train.CheckpointManager(self.checkpoint,
+                                                              directory=self.checkpoint_dir,
+                                                              max_to_keep=1)
+    self.status                  = self.checkpoint.restore(self.manager.latest_checkpoint)
+    print(self.status)
     # Define the training loop
     self.noise_dim = 100
     self.num_examples_to_generate = 1
@@ -108,13 +112,14 @@ class Train_Instrument:
 
       # Save the model every 20 epochs
       if (epoch + 1) % 20 == 0:
-        self.checkpoint.save(file_prefix = self.checkpoint_prefix)
+        self.manager.save()
 
         print ('Time for epoch {} is {} sec'.format(epoch + 1, time.time()-start))
 
   def generate_midi_data(self):
   # Notice `training` is set to False.
   # This is so all layers run in inference mode (batchnorm).
+    self.status = self.checkpoint.restore(self.manager.latest_checkpoint)
     predictions = self.generator(self.seed, training=False)
     return self.predictions_to_midi_data(np.array(predictions[0]).tolist())
 
