@@ -8,15 +8,12 @@ instruments = ['hihat',
                'kick',
                'snare']
 
-def get_training_data(md, data_path, instrument):
+def get_dummy_data(md, instrument):
   training_data = list()
-  for root, dirs, files in os.walk('{}/{}'.format(data_path, instrument), topdown=True):
-   for name in files:
-      f = os.path.join(root, name)
-      if f.endswith('.mid'):
-        data = md.get_data(f, instrument)
-        training_data.append(data)
-  
+  data = list()
+  for i in range(int(md.whole_lenth/md.min_note[instrument])):
+    data.append([0.0,0.0])
+  training_data.append(data)
   return training_data
                
 def main():
@@ -26,7 +23,7 @@ def main():
   md = Midi_Data()
   # Train
   for instrument in instruments:
-    training_data = get_training_data(md, '{}/training_data'.format(script_home), instrument)
+    training_data = get_dummy_data(md, instrument)
     instrument_train = Train_Instrument('{}/chk_point'.format(script_home), instrument, training_data)
     out_data = instrument_train.generate_midi_data()
     md.create_midi(out_data, instrument, '{}/output/{}.mid'.format(script_home, instrument))
