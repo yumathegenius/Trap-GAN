@@ -29,8 +29,6 @@ class Train_Instrument:
     self.noise_dim = 100
     self.num_examples_to_generate = 1
 
-    # We will reuse this seed overtime (so it's easier)
-    # to visualize progress in the animated GIF)
     self.seed = tf.random.normal([self.num_examples_to_generate, self.noise_dim])
 
   def make_generator_model(self):
@@ -49,7 +47,7 @@ class Train_Instrument:
   
     model.add(layers.Conv2DTranspose(1, (5, 5), strides=(2, 2), padding='same', use_bias=False, activation='tanh'))
     assert model.output_shape == (None, self.data_len, 2, 1)
-  
+
     return model
 
   def make_discriminator_model(self):
@@ -114,6 +112,14 @@ class Train_Instrument:
         self.manager.save()
 
         print ('Time for epoch {} is {} sec'.format(epoch + 1, time.time()-start))
+
+  def save_generator_modle_h5(self, path):
+    self.status = self.checkpoint.restore(self.manager.latest_checkpoint)
+    self.generator.save('{}/{}.h5'.format(path, self.instrument))
+
+  def save_generator_modle(self, path):
+    self.status = self.checkpoint.restore(self.manager.latest_checkpoint)
+    self.generator.save('{}/{}'.format(path, self.instrument))
 
   def generate_midi_data(self):
   # Notice `training` is set to False.

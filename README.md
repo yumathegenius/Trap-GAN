@@ -1,5 +1,7 @@
 # Trap-GAN
 This is a python base machine learning trap beats generator.
+<br><br>For Demo :<br>https://trapgan.yumathegenius.com/
+
 
 ## Instroments 
  - hihat
@@ -42,6 +44,7 @@ Here are the setting for default program
                   <br>  kick : eighth note
                   <br>  snare : eighth note
 - Pitch : As long as they are all same pitch
+- Triplet are available if adjust the setting in midi_Data.py.   
 
 ### Midi_Data()
 #### Initialize

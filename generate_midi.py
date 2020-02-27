@@ -1,31 +1,60 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
-from midi_Data import*
-from gan import*
+import tensorflow as tf
+import numpy as np
 import re, os, sys
+from midi_Data import*
 import shutil
 
 instruments = ['hihat',
                'kick',
                'snare']
 
-def get_dummy_data(md, instrument):
-  training_data = list()
-  data = list()
-  for i in range(int(md.whole_lenth/md.min_note[instrument])):
-    data.append([0.0,0.0])
-  training_data.append(data)
-  return training_data
-               
+class Midi_Generator:
+  def __init__(self):
+    # Define the training loop
+    self.noise_dim = 100
+    self.num_examples_to_generate = 1
+
+    self.seed = tf.random.normal([self.num_examples_to_generate, self.noise_dim])
+
+  def generate_midi_data(self, path, instrument):
+    generator = tf.keras.models.load_model('{}/{}.h5'.format(path, instrument))
+    predictions = generator(self.seed, training=False)
+    return self.predictions_to_midi_data(np.array(predictions[0]).tolist())
+
+  def predictions_to_midi_data(self, predictions):
+    midi_data = []
+    pre = None
+    for note in predictions:
+      if round(note[0][0]) == 1:
+        on = 1
+      else:
+        on = 0
+      if round(note[1][0]) == 1:
+        if pre == on:
+          con = 1
+        else:
+          con = 0
+      else:
+        if pre == 0 and on == 0:
+          con = 1
+        else:
+          con = 0
+      pre = on
+      midi_data.append([on, con])
+    
+    return midi_data
+
+
 def main():
   script_home = os.path.dirname(os.path.realpath(__file__))
   os.makedirs('{}/output'.format(script_home), exist_ok = True)
 
+  midi_generator = Midi_Generator()
   md = Midi_Data()
-  # Train
+  
   for instrument in instruments:
-    training_data = get_dummy_data(md, instrument)
-    instrument_train = Train_Instrument('{}/chk_point'.format(script_home), instrument, training_data)
-    out_data = instrument_train.generate_midi_data()
+    out_data = midi_generator.generate_midi_data('{}/h5model'.format(script_home), instrument)
     md.create_midi(out_data, instrument, '{}/output/{}.mid'.format(script_home, instrument))
 
 if __name__ == '__main__':

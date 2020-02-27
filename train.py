@@ -32,7 +32,8 @@ def get_training_data(md, data_path, instrument):
 
 def main():
   script_home = os.path.dirname(os.path.realpath(__file__))
-  os.makedirs('{}/output'.format(script_home), exist_ok = True)
+  os.makedirs('{}/h5model'.format(script_home), exist_ok = True)
+  os.makedirs('{}/model'.format(script_home), exist_ok = True)
 
   epochs = 20
 
@@ -45,7 +46,9 @@ def main():
   for instrument in instruments:
     training_data = get_training_data(md, '{}/training_data'.format(script_home), instrument)
     instrument_train = Train_Instrument('{}/chk_point'.format(script_home), instrument, training_data)
-    instrument_train.train(epochs)
+    #instrument_train.train(epochs)
+    instrument_train.save_generator_modle_h5('{}/h5model'.format(script_home))
+    instrument_train.save_generator_modle('{}/model'.format(script_home))
 
 if __name__ == '__main__':
   main()

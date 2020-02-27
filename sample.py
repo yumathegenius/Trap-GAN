@@ -34,7 +34,7 @@ def main():
   script_home = os.path.dirname(os.path.realpath(__file__))
   os.makedirs('{}/output'.format(script_home), exist_ok = True)
 
-  epochs = 100
+  #epochs = 100
 
   md = Midi_Data()
   # Check Training data
@@ -45,9 +45,9 @@ def main():
   for instrument in instruments:
     training_data = get_training_data(md, '{}/training_data'.format(script_home), instrument)
     instrument_train = Train_Instrument('{}/chk_point'.format(script_home), instrument, training_data)
-    instrument_train.train(epochs)
-    out_data = instrument_train.generate_midi_data()
-    md.create_midi(out_data, instrument, '{}/output/{}.mid'.format(script_home, instrument))
+  #  instrument_train.train(epochs)
+  #  out_data = instrument_train.generate_midi_data()
+  #  md.create_midi(out_data, instrument, '{}/output/{}.mid'.format(script_home, instrument))
 
 if __name__ == '__main__':
   main()
