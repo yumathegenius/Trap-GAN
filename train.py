@@ -46,7 +46,7 @@ def main():
   for instrument in instruments:
     training_data = get_training_data(md, '{}/training_data'.format(script_home), instrument)
     instrument_train = Train_Instrument('{}/chk_point'.format(script_home), instrument, training_data)
-    #instrument_train.train(epochs)
+    instrument_train.train(epochs)
     instrument_train.save_generator_modle_h5('{}/h5model'.format(script_home))
     instrument_train.save_generator_modle('{}/model'.format(script_home))
 
