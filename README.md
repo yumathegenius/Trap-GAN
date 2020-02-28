@@ -44,7 +44,6 @@ Here are the setting for default program
                   <br>  kick : eighth note
                   <br>  snare : eighth note
 - Pitch : As long as they are all same pitch
-- Triplet are available if adjust the setting in midi_Data.py.   
 
 ### Midi_Data()
 #### Initialize
